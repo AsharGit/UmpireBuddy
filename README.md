@@ -1,2 +1,2 @@
 # UmpireBuddy
-Umpire Buddy V 1.0
+Umpire Buddy V 2.0
