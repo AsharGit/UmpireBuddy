@@ -1,10 +1,12 @@
 package com.example.umpirebuddy;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnStrike;
     Button btnReset;
     Button btnExit;
+    Button btnAbout;
 
     TextView txtBall;
     TextView txtStrike;
@@ -35,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Button increments the balls
-        btnBall = (Button)findViewById(R.id.buttonBall);
-        txtBall = (TextView)findViewById(R.id.textViewBall);
+        btnBall = findViewById(R.id.buttonBall);
+        txtBall = findViewById(R.id.textViewBall);
         btnBall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,28 +48,32 @@ public class MainActivity extends AppCompatActivity {
               ballCount++;
                 if (ballCount >= 4){
                     btnBall.setEnabled(false);
+                    btnStrike.setEnabled(false);
+                    dialogPrompt("Walk!");
                 }
               txtBall.setText(String.valueOf(ballCount));
             }
         });
 
         // Button increments the strikes
-        btnStrike = (Button)findViewById(R.id.buttonStrike);
-        txtStrike = (TextView)findViewById(R.id.textViewStrike);
+        btnStrike = findViewById(R.id.buttonStrike);
+        txtStrike = findViewById(R.id.textViewStrike);
         btnStrike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int strikeCount = Integer.parseInt(txtStrike.getText().toString());
                 strikeCount++;
                 if (strikeCount >= 3){
+                    btnBall.setEnabled(false);
                     btnStrike.setEnabled(false);
+                    dialogPrompt("Out!");
                 }
                 txtStrike.setText(String.valueOf(strikeCount));
             }
         });
 
         // Button resets balls and strikes
-        btnReset = (Button)findViewById(R.id.buttonReset);
+        btnReset = findViewById(R.id.buttonReset);
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,8 +84,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Button takes you to About window
+        btnAbout = findViewById(R.id.buttonAbout);
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogPrompt("Umpire Buddy V 2.0 by Ashish Sharma");
+            }
+        });
+
         // Button exits application
-        btnExit = (Button)findViewById(R.id.buttonExit);
+        btnExit = findViewById(R.id.buttonExit);
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +103,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void dialogPrompt(String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create().show();
     }
 
     @Override
